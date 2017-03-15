@@ -13,7 +13,7 @@ with open('README.rst', 'r', 'utf-8') as f:
 
 setup(
     name='hamed_advanced',
-    version='0.1',
+    version='1.0',
     description="Simple pair of cipher/decipher functions "
                 "for hamed advanced mode",
     long_description=readme,
