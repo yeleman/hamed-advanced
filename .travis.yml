@@ -2,5 +2,5 @@ language: python
 python:
     - "3.6"
 install:
-  - pip install -Ur test-requirements.pip
+  - pip install -Ur tests-requirements.pip
 script: python setup.py pytest
