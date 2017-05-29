@@ -43,7 +43,7 @@ def deget(l, letter, pad):
     lli = len(l) - 1
     if ni > lli:
         ni = ni - lli
-    if ni < 0:
+    if ni <= 0:
         ni = lli + ni
     return ni
 
@@ -159,7 +159,7 @@ def main():
             fail("ERROR. Incorrect cerle_id: {}".format(exp))
 
         date_str = input("Please provide a Request Date in Y-M-D format "
-                         "(or blank for toay): ")
+                         "(or blank for today): ")
         try:
             date = datetime.datetime.now() if not len(date_str) else \
                 datetime.datetime(*[int(p) for p in date_str.split('-')],
