@@ -19,33 +19,60 @@ def get_code(dt, cercle_id):
         day=str(dt.day).zfill(2))
 
 
+def aget(l, char, pad):
+    ''' Character from character in alphabet, moved by pad '''
+
+    return get(l, l.index(char), pad) if char in l else char
+
+
 def get(l, index, pad):
     ''' Character from alphabet at requested position, moved by pad '''
-    if not index <= len(l) - 1:
+
+    if index < 0 or not index <= len(l) - 1:
         raise ValueError("'{}' not an index of the list".format(index))
+
     pad = abs(pad)
-    ni = index + pad
-    lli = len(l) - 1
-    if ni > lli:
-        ni = ni - lli
-    if ni < 0:
-        ni = lli + ni
-    return l[ni]
+    if pad > len(l):
+        raise ValueError("Invalid PAD")
+    new_index = index + pad
+    last_index = len(l) - 1
+
+    if new_index > last_index:
+        new_index = (new_index - 1) % last_index
+
+    if new_index < 0:
+        pass
+        # should not happen (index and pad are abs)
+
+    return l[new_index]
+
+
+def adeget(l, letter, pad):
+    ''' Character from letter after pad correction '''
+
+    index = deget(l, letter, pad)
+    return l[index] if index is not None else letter
 
 
 def deget(l, letter, pad):
     ''' Index in alphabet for letter after pad correction '''
+
+    pad = abs(pad)
+    if pad > len(l):
+        raise ValueError("Invalid PAD")
+    last_index = len(l) - 1
+
     try:
         index = l.index(letter)
     except ValueError:
         return None
-    ni = index - abs(pad)
-    lli = len(l) - 1
-    if ni > lli:
-        ni = ni - lli
-    if ni <= 0:
-        ni = lli + ni
-    return ni
+
+    new_index = index - pad
+
+    if new_index < 0:
+        new_index = last_index + new_index + 1
+
+    return new_index
 
 
 def cipher(text, pad):
@@ -53,7 +80,8 @@ def cipher(text, pad):
     chars = []
     for c in text:
         try:
-            chars.append(get(alphabet, alphabet.index(c), pad))
+            # chars.append(get(alphabet, alphabet.index(c), pad))
+            chars.append(aget(alphabet, c, pad))
         except:
             chars.append(c)
     return "".join(chars)
@@ -63,9 +91,11 @@ def decipher(text, pad):
     ''' Decode text with caesar cipher for pad '''
     chars = []
     for c in text:
-        ci = deget(alphabet, c, pad)
+        # ci = deget(alphabet, c, pad)
+        ci = adeget(alphabet, c, pad)
         if ci is not None:
-            chars.append(alphabet[ci])
+            # chars.append(alphabet[ci])
+            chars.append(ci)
         else:
             chars.append(c)
     return "".join(chars)
